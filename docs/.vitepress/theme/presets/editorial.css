@@ -1,0 +1,57 @@
+/**
+ * Editorial preset: warm ivory paper, serif display type, clay accent.
+ * Every token below is consumed by ../base.css.
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap');
+
+:root {
+  --t-bg: #faf9f5;
+  --t-bg-alt: #f0eee6;
+  --t-surface: #ffffff;
+  --t-border: #e6e3d9;
+  --t-text: #141413;
+  --t-text-2: #5e5d59;
+  --t-text-3: #87867f;
+  --t-accent: #c96442;
+  --t-accent-hover: #b0563a;
+  --t-accent-soft: rgba(201, 100, 66, 0.1);
+
+  --t-btn-bg: #141413;
+  --t-btn-text: #faf9f5;
+  --t-btn-hover-bg: #30302e;
+
+  --t-font-body: 'Inter', ui-sans-serif, system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --t-font-display: 'Newsreader', 'Iowan Old Style', Georgia, 'Songti SC', serif;
+  --t-display-weight: 400;
+  --t-display-tracking: -0.02em;
+  --t-heading-weight: 500;
+
+  --t-radius: 14px;
+  --t-radius-btn: 10px;
+  --t-shadow: 0 1px 2px rgba(20, 20, 19, 0.04);
+  --t-shadow-hover: 0 12px 32px -16px rgba(20, 20, 19, 0.25);
+  --t-nav-bg: rgba(250, 249, 245, 0.82);
+  --t-code-bg: #f0eee6;
+}
+
+.dark {
+  --t-bg: #1f1e1d;
+  --t-bg-alt: #262624;
+  --t-surface: #2a2a28;
+  --t-border: #3a3936;
+  --t-text: #faf9f5;
+  --t-text-2: #c2c0b6;
+  --t-text-3: #8f8d85;
+  --t-accent: #e08a6b;
+  --t-accent-hover: #ec9c7f;
+  --t-accent-soft: rgba(224, 138, 107, 0.14);
+
+  --t-btn-bg: #faf9f5;
+  --t-btn-text: #141413;
+  --t-btn-hover-bg: #e8e6dc;
+
+  --t-shadow: none;
+  --t-shadow-hover: 0 12px 32px -16px rgba(0, 0, 0, 0.6);
+  --t-nav-bg: rgba(31, 30, 29, 0.82);
+  --t-code-bg: #262624;
+}

@@ -1,0 +1,8 @@
+# Cloudflare Pages configuration.
+# Used by `npm run deploy` (wrangler pages deploy). If you connect the repo
+# through the Cloudflare dashboard instead, the same values apply:
+#   Build command:          npm run build
+#   Build output directory: docs/.vitepress/dist
+name = "my-project-docs"
+pages_build_output_dir = "docs/.vitepress/dist"
+compatibility_date = "2026-10-01"

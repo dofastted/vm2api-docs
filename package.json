@@ -1,0 +1,20 @@
+{
+  "name": "docs-site-template",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A polished VitePress documentation site template, ready for Cloudflare Pages.",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs",
+    "deploy": "npm run build && wrangler pages deploy"
+  },
+  "devDependencies": {
+    "vitepress": "1.6.4",
+    "wrangler": "4.149.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
