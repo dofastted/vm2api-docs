@@ -4,23 +4,20 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 // Project settings: edit these first. Everything else reads from here.
 // ---------------------------------------------------------------------------
 const project = {
-  name: 'Acme Docs',
-  description: 'Beautiful, fast documentation for your project.',
-  // Public URL of the deployed site (used for the sitemap and social cards).
-  url: 'https://docs.example.com',
-  github: 'https://github.com/your-org/your-repo',
-  // Branch + folder used by "Edit this page on GitHub".
-  editBase: 'https://github.com/your-org/your-repo/edit/main/docs/',
-  license: 'MIT',
-  copyright: `© ${new Date().getFullYear()}-present Your Org`
+  name: 'vm2api',
+  description:
+    'Fully isolated VM-level gateway that turns Claude and ChatGPT subscriptions into standard APIs.',
+  url: 'https://my-project-docs.pages.dev',
+  github: 'https://github.com/dofastted/vm2api',
+  editBase: 'https://github.com/dofastted/vm2api-docs/edit/main/docs/',
+  license: 'Non-commercial',
+  copyright: `© ${new Date().getFullYear()} vm2api`
 }
 
-// ---------------------------------------------------------------------------
-// Navigation and sidebars, one per language.
-// ---------------------------------------------------------------------------
 function navEn(): DefaultTheme.NavItem[] {
   return [
     { text: 'Home', link: '/' },
+    { text: 'Quick Start', link: '/guide/quick-start', activeMatch: '/guide/quick-start' },
     { text: 'Guide', link: '/guide/what-is', activeMatch: '/guide/' },
     { text: 'Reference', link: '/reference/configuration', activeMatch: '/reference/' }
   ]
@@ -30,17 +27,24 @@ function sidebarEn(): DefaultTheme.Sidebar {
   return {
     '/guide/': [
       {
-        text: 'Introduction',
+        text: 'Start',
         items: [
-          { text: 'What is Acme?', link: '/guide/what-is' },
+          { text: 'What is vm2api?', link: '/guide/what-is' },
           { text: 'Quick Start', link: '/guide/quick-start' }
         ]
       },
       {
-        text: 'Writing Docs',
+        text: 'Deploy',
         items: [
-          { text: 'Markdown Features', link: '/guide/markdown' },
-          { text: 'Deploy to Cloudflare', link: '/guide/deploy-cloudflare' }
+          { text: 'Install', link: '/guide/install' },
+          { text: 'Console', link: '/guide/console' }
+        ]
+      },
+      {
+        text: 'Use',
+        items: [
+          { text: 'Call the API', link: '/guide/api' },
+          { text: 'Slots and accounts', link: '/guide/slots' }
         ]
       }
     ],
@@ -59,6 +63,7 @@ function sidebarEn(): DefaultTheme.Sidebar {
 function navZh(): DefaultTheme.NavItem[] {
   return [
     { text: '首页', link: '/zh/' },
+    { text: '快速开始', link: '/zh/guide/quick-start', activeMatch: '/zh/guide/quick-start' },
     { text: '指南', link: '/zh/guide/what-is', activeMatch: '/zh/guide/' },
     { text: '参考', link: '/zh/reference/configuration', activeMatch: '/zh/reference/' }
   ]
@@ -68,17 +73,24 @@ function sidebarZh(): DefaultTheme.Sidebar {
   return {
     '/zh/guide/': [
       {
-        text: '简介',
+        text: '开始',
         items: [
-          { text: '什么是 Acme？', link: '/zh/guide/what-is' },
+          { text: '什么是 vm2api', link: '/zh/guide/what-is' },
           { text: '快速开始', link: '/zh/guide/quick-start' }
         ]
       },
       {
-        text: '编写文档',
+        text: '部署',
         items: [
-          { text: 'Markdown 扩展', link: '/zh/guide/markdown' },
-          { text: '部署到 Cloudflare', link: '/zh/guide/deploy-cloudflare' }
+          { text: '安装', link: '/zh/guide/install' },
+          { text: '管理台', link: '/zh/guide/console' }
+        ]
+      },
+      {
+        text: '接入',
+        items: [
+          { text: '调用 API', link: '/zh/guide/api' },
+          { text: '槽位与账号', link: '/zh/guide/slots' }
         ]
       }
     ],
@@ -94,13 +106,10 @@ function sidebarZh(): DefaultTheme.Sidebar {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Site config
-// ---------------------------------------------------------------------------
 export default defineConfig({
   title: project.name,
   description: project.description,
-  cleanUrls: true, // Cloudflare Pages serves /page for /page.html natively
+  cleanUrls: true,
   lastUpdated: true,
   sitemap: { hostname: project.url },
 
@@ -108,7 +117,7 @@ export default defineConfig({
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
     ['meta', { name: 'theme-color', content: '#faf9f5' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:site_name', content: project.name }],
+    ['meta', { property: 'og:site_name', content: project.name }]
   ],
 
   markdown: {
@@ -130,7 +139,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       link: '/zh/',
-      description: '为你的项目打造美观、快速的文档站。',
+      description: '全隔离虚拟机级网关，把 Claude 与 ChatGPT 订阅转成标准 API。',
       themeConfig: {
         nav: navZh(),
         sidebar: sidebarZh(),
@@ -152,7 +161,7 @@ export default defineConfig({
     logo: { light: '/logo.svg', dark: '/logo-dark.svg' },
     socialLinks: [{ icon: 'github', link: project.github }],
     footer: {
-      message: `Released under the ${project.license} License.`,
+      message: `Software use is ${project.license}. See the product license in the vm2api repository.`,
       copyright: project.copyright
     },
     outline: { level: [2, 3] },

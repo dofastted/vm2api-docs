@@ -1,9 +1,9 @@
 {
-  "name": "docs-site-template",
+  "name": "vm2api-docs",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "A polished VitePress documentation site template, ready for Cloudflare Pages.",
+  "description": "Help site for vm2api.",
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "vitepress build docs",

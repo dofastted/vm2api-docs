@@ -1,53 +1,66 @@
 # 快速开始
 
-一分钟内在本地运行文档站。
+Ubuntu 24.04，已安装 Docker Engine。Debian 12 上槽内核经常起不来。安装器拉取预构建镜像，不在服务器上编译。
 
-## 环境要求
+## 1. 安装
 
-- [Node.js](https://nodejs.org/) 18 或更高版本
-- npm、pnpm、yarn 或 bun
-
-## 安装依赖
-
-::: code-group
-
-```sh [npm]
-npm install
+```bash
+curl -sSL https://raw.githubusercontent.com/dofastted/vm2api/main/deploy/install.sh | sudo bash
 ```
 
-```sh [pnpm]
-pnpm install
+脚本下载 `docker-compose.yml`、`.env.example` 和 `VERSION`，补全空的 `.env`（`chmod 600`），然后执行 `docker compose pull` 和 `up -d`。
+
+`VM2API_ADMIN_PASSWORD` 为空时，管理台账号是 **`admin` / `123456`**。已经写过的密码不会被覆盖。空的 `VM2API_API_KEY` 和 `VM2API_DB_SECRET` 会生成随机值。
+
+端口对公网开放之前，先改掉管理台密码。
+
+ARM64 主机用同一条命令。脚本会选择 `-arm64` 控制面镜像并准备 QEMU。槽位镜像仍是 amd64。这条路径是实验性的，见 [安装](./install)。
+
+## 2. 检查控制面
+
+Compose 只启动一个容器：`vm2api`。槽容器稍后才出现，名字是 `kin-<槽>`，而且只有在你启动槽位之后才有。
+
+```bash
+curl -sS --noproxy '*' http://127.0.0.1:8787/health
 ```
 
-```sh [yarn]
-yarn install
+Docker Desktop 或 WSL 上，宿主机的 `127.0.0.1` 可能探不到这个端口。改问容器：
+
+```bash
+docker exec vm2api python3 -c 'import urllib.request; print(urllib.request.urlopen("http://127.0.0.1:8787/health").read().decode())'
 ```
 
-```sh [bun]
-bun install
+## 3. 打开管理台
+
+[http://127.0.0.1:8787/console/#/login](http://127.0.0.1:8787/console/#/login)
+
+旧部署说明写的是 `http://<主机>:8787/cc#/login`。如果那个地址 404，改用 `/console/#/login`。当前服务在 `GET /console` 提供构建好的管理台。
+
+## 4. 先加出口，再加账号
+
+槽位在有可用出口之前不会导入凭证：远程 SOCKS5，或本地出口 `px-local`。首次启动可能会种下 `px-local`。
+
+然后导入账号（OAuth 或账号文件），Claude 槽再跑官方初装。细节在 [槽位与账号](./slots)。
+
+## 5. 调用
+
+```bash
+curl -sS http://127.0.0.1:8787/v1/messages \
+  -H "Authorization: Bearer $VM2API_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "claude-sonnet-5",
+    "max_tokens": 128000,
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
 ```
 
-:::
+`VM2API_API_KEY` 是 `.env` 里的 Master 密钥。它可以调用 `/v1/*` 和管理台 API。在管理台签发的密钥（`sk-vm-…`）只能调用 `/v1/*`。
 
-## 启动开发服务器
+## 以后更新
 
-```sh
-npm run dev
+```bash
+curl -sSL https://raw.githubusercontent.com/dofastted/vm2api/main/deploy/install.sh | sudo bash -s -- upgrade
 ```
 
-打开 `http://localhost:5173`。编辑 `docs/` 下的 Markdown 文件，页面会即时刷新。
-
-## 构建生产版本
-
-```sh
-npm run build
-npm run preview
-```
-
-静态站点输出到 `docs/.vitepress/dist`。
-
-## 接下来
-
-- 修改 [配置](../reference/configuration)，打造你自己的站点。
-- 了解每个页面都可用的 [Markdown 扩展](./markdown)。
-- 准备好后 [部署到 Cloudflare](./deploy-cloudflare)。
+更新会保留 `.env`、`vms/` 和 `data/`。不要为了升级去 `docker rm` 槽容器。脚本会把 `share/wrap-cli`（含 `kin-kernel.bin`）同步进正在运行的槽，并重启槽内数据面。`--no-sync-wrap` 会跳过这次同步。
