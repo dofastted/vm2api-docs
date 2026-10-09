@@ -1,46 +1,28 @@
-# Console
+# Page map
 
-The control plane serves the console at `GET /console`. Routes are a hash router.
+The console is `http://<host>:8787/console/#/…`. The left nav matches the pages below. Install and update are not console screens. They are pinned at the top of this site: [Install](./install), [Update](./upgrade).
 
-| Page | URL |
-| --- | --- |
-| Login | `http://<host>:8787/console/#/login` |
-| Overview | `http://<host>:8787/console/#/overview` |
-| Virtual machines | `http://<host>:8787/console/#/vm` |
-| Import | `http://<host>:8787/console/#/import` |
-| Proxy pool | `http://<host>:8787/console/#/proxies` |
-| Keys | `http://<host>:8787/console/#/keys` |
-| Models | `http://<host>:8787/console/#/models` |
-| Logs | `http://<host>:8787/console/#/logs` |
-| Cluster | `http://<host>:8787/console/#/cluster` |
-| Settings | `http://<host>:8787/console/#/settings` |
+| Nav | URL | This page owns |
+| --- | --- | --- |
+| Overview | `#/overview` | Cluster health, whether accounts can be scheduled, the last hour of service |
+| Statistics | `#/statistics` | Request, cost, and latency trends, plus user and model ranks |
+| Logs | `#/logs` | One row per request: filter, export, open the body |
+| Usage | `#/usage` | Per-account 5h / 7d occupancy, concurrency, and cost |
+| Billing | `#/billing` | Spend by virtual machine or by key |
+| Cluster | `#/cluster` | This host, plus other VPS nodes joined over SSH |
+| Virtual machines | `#/vm` | Slot list, and one slot's status, egress, setup, and shell |
+| Import | `#/import` | Create an empty slot, bind an exit, write the account |
+| Proxy pool | `#/proxies` | SOCKS5 exits and the local exit |
+| Models | `#/models` | The catalog `GET /v1/models` returns |
+| Risk audit | `#/risk` | Distillation, refusal, hard regex, and the hits |
+| System prompts | `#/system` | Persona templates and the inject preview |
+| Keys | `#/keys` | `sk-vm-…` keys for clients |
+| API | `#/api` | Named upstream endpoints, with their keys and models |
+| Database | `#/database` | SQLite runtime and cache counters |
+| Settings | `#/settings/sticky` | Scheduling, protocol, setup, notify, backup, about |
+| Users | `#/users` | People who can sign in to the console |
+| Kernel | `#/wrap` | Install and sync the in-slot kernel |
 
-A `404` body `console not found; run pnpm -C web build` means this tree has no `web/dist`. Release images already include it.
+The four monitor pages do not repeat the same numbers. Overview is health. Statistics is the trend. Logs is one request. Usage is the account window.
 
-## Sign in
-
-Default user is `admin`. The password is `VM2API_ADMIN_PASSWORD`. The installer writes `123456` only when that variable is empty, and it will not overwrite a password you already set.
-
-The login form posts to `POST /api/panel/login`. A console session can call `/api/panel/*`. It cannot be reused as a protocol key.
-
-## What each area is for
-
-- **Overview** shows whether the cluster is healthy, whether accounts are schedulable, and the last hour of service.
-- **Virtual machines** is the slot list: state, egress, 5h / 7d budget, and the official-client setup card.
-- **Import** adds an account by OAuth or by an account file. The slot must already have an egress.
-- **Proxy pool** holds SOCKS5 exits and the local exit. Geo lookup runs through the proxy itself.
-- **Keys** issues `sk-vm-…` protocol keys. Those keys call `/v1/*` only.
-- **Models** is the catalog returned by `GET /v1/models`.
-- **Logs** is one row per request.
-- **Cluster** is other VPS nodes, not a second copy of the slot list. The local machine is the console. Remotes are SSH reachability.
-- **Settings → About** shows the version and the upgrade command.
-
-Panel HTTP is documented in the product repository as [PANEL_API.md](https://github.com/dofastted/vm2api/blob/main/docs/PANEL_API.md). Responses use `{ ok, data }` or `{ ok: false, error }`. Read the payload from `data`.
-
-## Roles
-
-The panel has its own users. A protocol key is not a role. Master `VM2API_API_KEY` can call both `/v1/*` and `/api/panel/*`. Keep that key off client applications. Put an issued `sk-vm-…` key in those.
-
-## Shell tabs
-
-The cluster terminal and the slot ops terminal are browser WebSockets. If the page loads but the terminal says disconnected, nginx dropped `Upgrade`. Fix the proxy before retrying the slot. The checklist is [nginx-shell.md](https://github.com/dofastted/vm2api/blob/main/docs/nginx-shell.md).
+Settings edits routing config, not `.env`. A dirty draft shows a save bar. `Ctrl/Cmd+S` saves it. SOCKS5, telemetry, backup, and about have their own buttons and do not use that bar.

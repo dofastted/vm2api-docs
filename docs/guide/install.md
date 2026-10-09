@@ -1,86 +1,145 @@
 # Install
 
-Recommended layout: Docker Compose, prebuilt images, any directory. Examples use `/opt/vm2api`.
+Finish this page before you open the console. An existing machine uses [Update](./upgrade), not this page.
 
-Source and image build notes stay in the product repository: [DEPLOY.md](https://github.com/dofastted/vm2api/blob/main/docs/DEPLOY.md), [ARM64.md](https://github.com/dofastted/vm2api/blob/main/docs/ARM64.md), [BUILD.md](https://github.com/dofastted/vm2api/blob/main/docs/BUILD.md).
+These steps match product tree **1.3.131**. The one-click script pulls the latest GitHub release, which may be newer. The machine does not change: Ubuntu 24.04, Docker Engine, Compose V2. Debian 12 often fails to start the slot kernel. Do not compile on the target host.
 
-## Requirements
+## What done looks like
 
-- Ubuntu 24.04 and Docker Engine with Compose V2.
-- Three values in `.env`, mode `600`, not committed:
+| Check | Expected |
+| --- | --- |
+| `docker ps` | One vm2api container, named `vm2api`. No `kin-*` until you start a slot |
+| `GET /health` | HTTP 200 |
+| Browser | Login form at `http://<host>:8787/console/#/login` |
+| `.env` | Mode `600`, all three secrets non-empty |
+
+## Step 1: Check the machine
 
 ```bash
-VM2API_API_KEY='long random string'
-VM2API_ADMIN_PASSWORD='console password'
-VM2API_DB_SECRET='another random string'
+. /etc/os-release && echo "$VERSION_ID"
+docker --version
+docker compose version
 ```
 
-`VM2API_*` wins over the older `KIN_*` names.
+`VERSION_ID` should be `24.04`. `docker compose version` must work. The user running the install needs Docker; the commands below use `sudo`.
 
-## One command
+ARM64 (`uname -m` is `aarch64`) uses the same install command. The script selects the `-arm64` control-plane image and prepares QEMU. Slot images stay amd64. That path is experimental. Read the script error before editing the distro binfmt files.
+
+## Step 2: Choose the three secrets
+
+They live in `.env` in the install directory, mode `600`, not in git.
+
+| Variable | What you decide |
+| --- | --- |
+| `VM2API_ADMIN_USER` | Console user. Default `admin` |
+| `VM2API_ADMIN_PASSWORD` | Console password. **Empty becomes `123456`. An existing password is not overwritten** |
+| `VM2API_API_KEY` | Master key. Calls `/v1/*` and the panel API. Empty is generated |
+| `VM2API_DB_SECRET` | Database secret. Empty is generated. Do not rotate it later unless you are discarding the database |
+
+Do not leave `123456` in place once port 8787 is reachable from the internet. To choose the password yourself, use the manual install in step 4 and edit `.env` before `up -d`. After a one-click install you can still edit `.env` and `docker compose up -d`. That restarts the control plane only. There is no slot yet.
+
+## Step 3: One-click install
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/dofastted/vm2api/main/deploy/install.sh | sudo bash
 ```
 
-Useful follow-ups, once `deploy/install.sh` is on disk:
+The script downloads three files and does not clone the repo:
+
+- `docker-compose.yml`
+- `.env.example`
+- `VERSION`
+
+It fills `.env` (`chmod 600`), then `docker compose pull` and `docker compose up -d`. The default directory is `/opt/vm2api`. The image entrypoint writes `bin/` and `share/wrap-cli` onto the mount and fills missing `src/config` files from image defaults.
 
 ```bash
-sudo bash /opt/vm2api/deploy/install.sh upgrade
-sudo bash /opt/vm2api/deploy/install.sh upgrade --version v1.3.131
-sudo bash /opt/vm2api/deploy/install.sh check
-sudo bash /opt/vm2api/deploy/install.sh changelog
-```
-
-The console page **Settings → About** can copy the same upgrade command.
-
-## Manual Compose
-
-```bash
-mkdir -p /opt/vm2api && cd /opt/vm2api
-curl -sSLO https://raw.githubusercontent.com/dofastted/vm2api/main/docker-compose.yml
-curl -sSL -o .env https://raw.githubusercontent.com/dofastted/vm2api/main/.env.example
-chmod 600 .env
-# Set the three secrets. Empty API key and DB secret are generated on start.
-docker compose pull
-docker compose up -d
+docker ps --format 'table {{.Names}}\t{{.Status}}\t{{.Ports}}'
 curl -sS --noproxy '*' http://127.0.0.1:8787/health
 ```
 
-The image entrypoint writes `bin/` and `share/wrap-cli` onto the mounted directory, and fills missing files under `src/config` from the image defaults.
-
-## What should be running
-
-| Container | When |
-| --- | --- |
-| `vm2api` | Always. Compose starts only this one. |
-| `kin-<slot>` | One per **started** slot. |
-| nothing else from vm2api | A slot that exists but is not started has no container. |
-
-The control plane uses the host network and the host Docker socket. A native Claude slot defaults to a `1g` memory cap (`KIN_VM_MEMORY` overrides it for new containers). Raising the cap on an existing container is `docker update --memory 1g --memory-swap 1g kin-<slot>`. That does not recreate it.
-
-`native stdin: Broken pipe` means you also check OOM and the CLI child. A live Rust PID 1 is not enough.
-
-## From source
-
-Only when you are changing the tree:
+On Docker Desktop or WSL the host loopback can miss the port:
 
 ```bash
-git clone https://github.com/dofastted/vm2api.git /opt/vm2api
-cd /opt/vm2api && cp .env.example .env && chmod 600 .env
-docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build
+docker exec vm2api python3 -c 'import urllib.request; print(urllib.request.urlopen("http://127.0.0.1:8787/health").read().decode())'
 ```
 
-The one-click script's matching flag is `--from-source`. If the directory already has `.git`, `upgrade` follows the source branch. Binaries in `bin/` must be mode `755`.
+## Step 4: Manual install, same artifacts
 
-## ARM64
+```bash
+sudo mkdir -p /opt/vm2api && cd /opt/vm2api
+sudo curl -sSLO https://raw.githubusercontent.com/dofastted/vm2api/main/docker-compose.yml
+sudo curl -sSL -o .env https://raw.githubusercontent.com/dofastted/vm2api/main/.env.example
+sudo chmod 600 .env
+```
 
-Same install command. `uname -m` selects `vX.Y.Z-arm64` for the control plane and prepares QEMU so existing amd64 slot images still run. `--version` may end in `-amd64` or `-arm64`, and it must match the host. This path is experimental.
+Fill the three secrets from step 2, then:
 
-## Firewall
+```bash
+sudo docker compose pull
+sudo docker compose up -d
+curl -sS --noproxy '*' http://127.0.0.1:8787/health
+```
 
-If UFW or firewalld denies inbound by default, open the slot egress gateway before you send traffic. Otherwise slot requests return `502 incomplete_response` while the console proxy probe still looks healthy. The exact rules are in the product [DEPLOY.md](https://github.com/dofastted/vm2api/blob/main/docs/DEPLOY.md) firewall section.
+Clone the repo and add `docker-compose.build.yml` only when you are changing source. That is not the production install. Binaries in `bin/` must be mode `755`.
 
-## HTTPS
+## Step 5: Which containers exist
 
-The process listens on `:8787`. Put TLS on nginx. Cluster shells and the per-slot ops terminal are WebSockets. Their `location` must pass `Upgrade` and must be **before** any `location` that sets `Connection ""`. See [nginx-shell.md](https://github.com/dofastted/vm2api/blob/main/docs/nginx-shell.md).
+Compose starts **only** the control plane, `vm2api`. It uses the host network and the host Docker socket.
+
+| Name | When it exists |
+| --- | --- |
+| `vm2api` | After a successful install, for the life of the deployment |
+| `kin-<slot>` | One per slot you have started in the console |
+| nothing else | A slot record with no start has no container |
+
+Slots are not child processes inside `vm2api`. A new native Claude slot defaults to a `1g` memory cap (`KIN_VM_MEMORY` applies to creation). An older container still on `500m` does not grow because the control plane was upgraded.
+
+## Step 6: Firewall and TLS
+
+If UFW or firewalld denies inbound by default, open the slot egress gateway before you import an account or send traffic. Otherwise slot calls return `502 incomplete_response` while the console proxy probe stays green. Those are different checks.
+
+The exact allow rules are in the product [DEPLOY.md](https://github.com/dofastted/vm2api/blob/main/docs/DEPLOY.md) firewall section, because they follow your egress topology.
+
+For HTTPS, terminate TLS in nginx and proxy to `127.0.0.1:8787`. Cluster shells and the per-slot ops terminal are WebSockets. Their `location` must forward `Upgrade` and must be listed before any `location` that sets `Connection ""`. See [nginx-shell.md](https://github.com/dofastted/vm2api/blob/main/docs/nginx-shell.md).
+
+## Step 7: Sign in and replace the default password
+
+Open:
+
+`http://<host>:8787/console/#/login`
+
+If an older note's `/cc#/login` 404s, use the URL above. The server serves the console at `GET /console`. A body of `console not found; run pnpm -C web build` means this is not a release image.
+
+Sign in with `VM2API_ADMIN_USER` / `VM2API_ADMIN_PASSWORD`. Then on [Users](./console/users) set the admin password to at least 8 characters. Do not put the master key `VM2API_API_KEY` in a client. Issue an `sk-vm-…` key on [Keys](./console/keys).
+
+## Step 8: Egress, a slot, the first call
+
+The model is not callable yet. Order:
+
+1. [Proxy pool](./console/proxies): keep the seeded local exit `px-local`, or import a SOCKS5 proxy.
+2. [Import](./console/import): create an empty slot, bind the exit, then import OAuth or an account file. No exit returns `proxy_required`.
+3. Wait for official first-time setup on a Claude slot. Importing again on the same slot runs setup again.
+4. Send traffic only after the slot is schedulable.
+
+```bash
+curl -sS http://127.0.0.1:8787/v1/messages \
+  -H "Authorization: Bearer $VM2API_API_KEY" \
+  -H "content-type: application/json" \
+  -d '{
+    "model": "claude-sonnet-5",
+    "max_tokens": 128000,
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+```
+
+Minimum acceptance: `/health` is 200, `GET /v1/models` with a key returns a catalog, one messages call returns visible text. Slot rules are in [Slots and accounts](./slots).
+
+## If install fails
+
+| What you see | Do this first |
+| --- | --- |
+| `COPY VERSION` / `CHANGELOG.md not found` | You are in a source build with an incomplete tree. Production install does not `--build` |
+| Health fails on the host and works inside the container | Docker Desktop / WSL loopback. Use `docker exec` |
+| Console 404 | No `web/dist`. Use a release image, or build the web app in a source tree |
+| `proxy_required` on import | Bind SOCKS5 or `px-local` first |
+| Calls 502 while the probe is green | Firewall or DNS inside the slot. See [FAQ](../reference/faq) |

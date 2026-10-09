@@ -1,8 +1,5 @@
 import { defineConfig, type DefaultTheme } from 'vitepress'
 
-// ---------------------------------------------------------------------------
-// Project settings: edit these first. Everything else reads from here.
-// ---------------------------------------------------------------------------
 const project = {
   name: 'vm2api',
   description:
@@ -16,8 +13,8 @@ const project = {
 
 function navEn(): DefaultTheme.NavItem[] {
   return [
-    { text: 'Home', link: '/' },
-    { text: 'Quick Start', link: '/guide/quick-start', activeMatch: '/guide/quick-start' },
+    { text: 'Install', link: '/guide/install', activeMatch: '/guide/install' },
+    { text: 'Update', link: '/guide/upgrade', activeMatch: '/guide/upgrade' },
     { text: 'Guide', link: '/guide/what-is', activeMatch: '/guide/' },
     { text: 'Reference', link: '/reference/configuration', activeMatch: '/reference/' }
   ]
@@ -27,21 +24,43 @@ function sidebarEn(): DefaultTheme.Sidebar {
   return {
     '/guide/': [
       {
-        text: 'Start',
+        text: 'Start here',
         items: [
+          { text: 'Install', link: '/guide/install' },
+          { text: 'Update', link: '/guide/upgrade' },
           { text: 'What is vm2api?', link: '/guide/what-is' },
           { text: 'Quick Start', link: '/guide/quick-start' }
         ]
       },
       {
-        text: 'Deploy',
+        text: 'Console',
         items: [
-          { text: 'Install', link: '/guide/install' },
-          { text: 'Console', link: '/guide/console' }
+          { text: 'Page map', link: '/guide/console' },
+          { text: 'Overview', link: '/guide/console/overview' },
+          { text: 'Statistics', link: '/guide/console/statistics' },
+          { text: 'Logs', link: '/guide/console/logs' },
+          { text: 'Usage', link: '/guide/console/usage' },
+          { text: 'Billing', link: '/guide/console/billing' },
+          { text: 'Cluster', link: '/guide/console/cluster' },
+          { text: 'Virtual machines', link: '/guide/console/vm' },
+          { text: 'Import', link: '/guide/console/import' },
+          { text: 'Proxy pool', link: '/guide/console/proxies' },
+          { text: 'Models', link: '/guide/console/models' },
+          { text: 'Risk audit', link: '/guide/console/risk' },
+          { text: 'System prompts', link: '/guide/console/system' },
+          { text: 'Keys', link: '/guide/console/keys' },
+          { text: 'API endpoints', link: '/guide/console/endpoints' },
+          { text: 'Database', link: '/guide/console/database' },
+          { text: 'Users', link: '/guide/console/users' },
+          { text: 'Kernel', link: '/guide/console/kernel' }
         ]
       },
       {
-        text: 'Use',
+        text: 'Settings',
+        items: [{ text: 'All settings tabs', link: '/guide/settings' }]
+      },
+      {
+        text: 'Call',
         items: [
           { text: 'Call the API', link: '/guide/api' },
           { text: 'Slots and accounts', link: '/guide/slots' }
@@ -62,8 +81,8 @@ function sidebarEn(): DefaultTheme.Sidebar {
 
 function navZh(): DefaultTheme.NavItem[] {
   return [
-    { text: '首页', link: '/zh/' },
-    { text: '快速开始', link: '/zh/guide/quick-start', activeMatch: '/zh/guide/quick-start' },
+    { text: '安装', link: '/zh/guide/install', activeMatch: '/zh/guide/install' },
+    { text: '更新', link: '/zh/guide/upgrade', activeMatch: '/zh/guide/upgrade' },
     { text: '指南', link: '/zh/guide/what-is', activeMatch: '/zh/guide/' },
     { text: '参考', link: '/zh/reference/configuration', activeMatch: '/zh/reference/' }
   ]
@@ -73,18 +92,40 @@ function sidebarZh(): DefaultTheme.Sidebar {
   return {
     '/zh/guide/': [
       {
-        text: '开始',
+        text: '置顶',
         items: [
+          { text: '安装', link: '/zh/guide/install' },
+          { text: '更新', link: '/zh/guide/upgrade' },
           { text: '什么是 vm2api', link: '/zh/guide/what-is' },
           { text: '快速开始', link: '/zh/guide/quick-start' }
         ]
       },
       {
-        text: '部署',
+        text: '管理台',
         items: [
-          { text: '安装', link: '/zh/guide/install' },
-          { text: '管理台', link: '/zh/guide/console' }
+          { text: '页面一览', link: '/zh/guide/console' },
+          { text: '总览', link: '/zh/guide/console/overview' },
+          { text: '统计', link: '/zh/guide/console/statistics' },
+          { text: '日志', link: '/zh/guide/console/logs' },
+          { text: '用量', link: '/zh/guide/console/usage' },
+          { text: '计费', link: '/zh/guide/console/billing' },
+          { text: '集群', link: '/zh/guide/console/cluster' },
+          { text: '虚拟机', link: '/zh/guide/console/vm' },
+          { text: '导入', link: '/zh/guide/console/import' },
+          { text: '代理池', link: '/zh/guide/console/proxies' },
+          { text: '模型', link: '/zh/guide/console/models' },
+          { text: '风险审计', link: '/zh/guide/console/risk' },
+          { text: 'system 提示词', link: '/zh/guide/console/system' },
+          { text: '密钥', link: '/zh/guide/console/keys' },
+          { text: 'API 地址', link: '/zh/guide/console/endpoints' },
+          { text: '数据库', link: '/zh/guide/console/database' },
+          { text: '用户', link: '/zh/guide/console/users' },
+          { text: '内核', link: '/zh/guide/console/kernel' }
         ]
+      },
+      {
+        text: '设置',
+        items: [{ text: '全部设置页', link: '/zh/guide/settings' }]
       },
       {
         text: '接入',

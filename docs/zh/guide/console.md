@@ -1,46 +1,28 @@
-# 管理台
+# 页面一览
 
-控制面在 `GET /console` 提供管理台。路由是 hash。
+管理台地址是 `http://<主机>:8787/console/#/…`。左边导航和下面的文档一一对应。安装和更新不在管理台里完成，它们在侧栏置顶：[安装](./install)、[更新](./upgrade)。
 
-| 页面 | 地址 |
-| --- | --- |
-| 登录 | `http://<主机>:8787/console/#/login` |
-| 总览 | `http://<主机>:8787/console/#/overview` |
-| 虚拟机 | `http://<主机>:8787/console/#/vm` |
-| 导入 | `http://<主机>:8787/console/#/import` |
-| 代理池 | `http://<主机>:8787/console/#/proxies` |
-| 密钥 | `http://<主机>:8787/console/#/keys` |
-| 模型 | `http://<主机>:8787/console/#/models` |
-| 日志 | `http://<主机>:8787/console/#/logs` |
-| 集群 | `http://<主机>:8787/console/#/cluster` |
-| 设置 | `http://<主机>:8787/console/#/settings` |
+| 导航 | 地址 | 这一页负责 |
+| --- | --- | --- |
+| 总览 | `#/overview` | 集群是否健康、账号能不能调度、近 1 小时服务质量 |
+| 统计 | `#/statistics` | 请求、费用、耗时趋势，以及用户 / 模型排行 |
+| 日志 | `#/logs` | 每一条请求，筛选、导出、点开详情 |
+| 用量 | `#/usage` | 每个账号的 5 小时 / 7 天占用、并发和费用 |
+| 计费 | `#/billing` | 按虚拟机或按密钥看花费 |
+| 集群 | `#/cluster` | 本机，以及 SSH 接进来的其它 VPS |
+| 虚拟机 | `#/vm` | 槽列表、单个槽的状态、出口、初装、终端 |
+| 导入 | `#/import` | 创建空槽，绑定出口，写入账号 |
+| 代理池 | `#/proxies` | SOCKS5 和本地出口 |
+| 模型 | `#/models` | `GET /v1/models` 返回的目录 |
+| 风险审计 | `#/risk` | 蒸馏、拒答、硬正则，以及命中记录 |
+| system 提示词 | `#/system` | 人设模板和注入预览 |
+| 密钥 | `#/keys` | 发给客户端的 `sk-vm-…` |
+| API | `#/api` | 命名的上游地址，及其 key、模型 |
+| 数据库 | `#/database` | SQLite 运行态和缓存计数 |
+| 设置 | `#/settings/sticky` | 调度、协议、初装、通知、备份、关于 |
+| 用户 | `#/users` | 能登录管理台的人 |
+| 内核 | `#/wrap` | 槽内 kernel 的安装和同步 |
 
-响应体是 `console not found; run pnpm -C web build` 的 `404`，表示这棵树没有 `web/dist`。发行镜像里已经带上了。
+监控四页故意不重复同一块数：总览看健康，统计看趋势，日志看单条，用量看账号窗口。
 
-## 登录
-
-默认用户是 `admin`。密码是 `VM2API_ADMIN_PASSWORD`。只有这个变量为空时，安装器才写入 `123456`，并且不会覆盖你已经设置的密码。
-
-登录表单提交到 `POST /api/panel/login`。管理台会话可以调用 `/api/panel/*`。它不能当成协议密钥复用。
-
-## 各页做什么
-
-- **总览**看集群是否健康、账号是否可调度，以及近一小时的服务质量。
-- **虚拟机**是槽位列表：状态、出口、5 小时 / 7 天额度，以及官方客户端初装卡片。
-- **导入**用 OAuth 或账号文件添加账号。槽位必须已经有出口。
-- **代理池**放 SOCKS5 出口和本地出口。地理查询走代理自己。
-- **密钥**签发 `sk-vm-…` 协议密钥。这些密钥只能调用 `/v1/*`。
-- **模型**是 `GET /v1/models` 返回的目录。
-- **日志**一行一条请求。
-- **集群**是别的 VPS 节点，不是本机槽位列表的另一份拷贝。本机是控制台，远端是 SSH 可达性。
-- **设置 → 关于**显示版本和更新命令。
-
-面板 HTTP 写在产品仓库的 [PANEL_API.md](https://github.com/dofastted/vm2api/blob/main/docs/PANEL_API.md)。响应是 `{ ok, data }` 或 `{ ok: false, error }`。业务体从 `data` 里取。
-
-## 角色
-
-管理台有自己的用户。协议密钥不是一种角色。Master `VM2API_API_KEY` 既能调用 `/v1/*`，也能调用 `/api/panel/*`。不要把这把密钥放进客户端应用。那些地方放签发的 `sk-vm-…`。
-
-## 终端页
-
-集群终端和槽位运维终端是浏览器 WebSocket。页面能打开但终端显示已断开，是 nginx 丢掉了 `Upgrade`。先修反代，再重试槽位。检查表在 [nginx-shell.md](https://github.com/dofastted/vm2api/blob/main/docs/nginx-shell.md)。
+设置页改的是路由配置，不是 `.env`。左边有未保存的草稿时，底部有保存条，`Ctrl/Cmd+S` 也会保存。SOCKS5、遥测、备份、关于这四页自己有按钮，不走那条保存条。
