@@ -12,6 +12,10 @@ You need a slot that does not have a credential yet. The image choices match the
 
 1. **Pick an empty slot.** The list is only virtual machines that still have no credential. A slot that already has an account is refreshed or set up again from its own detail page, not from here.
 2. **Bind SOCKS5.** You cannot continue without an exit. Pick one from the pool, or paste a new line. Pasting replaces the binding this slot already had. The local exit `px-local` has no SOCKS URL. The control plane uses the host route.
+
+   ::: tip No exit yet?
+   [ProxyLane](https://proxylane.dev/zh-cn/isp-proxies?utm_source=vm2api&utm_medium=affiliate&utm_campaign=vm2api_sponsor_202610&utm_content=docs_import_en) native static residential ISP IPs for AI accounts: a dedicated IP with unlimited traffic. Paste its `host:port:user:pass` line here, see [Proxy pool](./proxies). Code `VM2API30` gives 30% off your first purchase.
+   :::
 3. **Exchange or import a file.**
    - Claude: OAuth. Live tokens are written only to that slot's `credentials.json`.
    - GPT: Codex OAuth, or an `auth.json` account file. Do not put a Setup Token or a Console Key on a GPT slot.

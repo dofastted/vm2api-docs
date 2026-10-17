@@ -12,6 +12,10 @@
 
 1. **选一台空槽。** 列表里只有还没有凭证的虚拟机。已经有账号的槽不在这里改票，去该槽详情里刷新或重新初装。
 2. **绑 SOCKS5。** 没有出口不能继续。选代理池里的一条，或粘贴新的一行，粘贴会盖掉这条槽上原来的绑定。本地出口 `px-local` 没有 SOCKS URL，控制面走宿主默认路由。
+
+   ::: tip 还没有出口？
+   [ProxyLane](https://proxylane.dev/zh-cn/isp-proxies?utm_source=vm2api&utm_medium=affiliate&utm_campaign=vm2api_sponsor_202610&utm_content=docs_import) AI 账号专用的原生静态住宅 IP，每个 IP 独享，不限流量。复制 `host:port:user:pass` 粘贴到这里即可，见 [代理池](./proxies)。首单优惠码 `VM2API30` 享 7 折。
+   :::
 3. **换票或导入文件。**
    - Claude：OAuth。活票只写进该槽的 `credentials.json`。
    - GPT：Codex OAuth，或账号文件 `auth.json`。不要把 Setup Token / Console Key 填到 GPT 槽。
