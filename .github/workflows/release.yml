@@ -1,0 +1,21 @@
+# Push a tag (e.g. v1.2.0) -> move the `release` branch to that tag.
+# Cloudflare Pages (project my-project-docs) builds production from `release`,
+# so tagging is what publishes https://vm2api.fkcodex.com.
+name: Release to Cloudflare Pages
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Point release branch at tag
+        run: git push --force origin "HEAD:refs/heads/release"
