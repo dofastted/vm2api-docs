@@ -9,7 +9,7 @@ Every slot exit lives here: remote SOCKS5, and the local exit `px-local`. An exi
 Paste a SOCKS5 URL or line. Save runs the same checks as account import: host, port, optional username and password.
 
 ::: tip Recommended exit: ProxyLane
-[ProxyLane](https://proxylane.dev/zh-cn/isp-proxies?utm_source=vm2api&utm_medium=affiliate&utm_campaign=vm2api_sponsor_202610&utm_content=docs_en) offers native static residential ISP IPs built for AI accounts: low Scamalytics fraud scores, a dedicated IP with unlimited traffic, from $3.90.
+[ProxyLane](https://proxylane.dev/go/vm2api-docs) offers native static residential ISP IPs built for Claude Max: low Scamalytics fraud scores, a dedicated IP with unlimited traffic, from $7.90.
 
 1. Copy the SOCKS5 connection from the ProxyLane dashboard. The format is `host:port:user:pass`.
 2. Paste it into Proxy pool → Add proxy (代理池 → 添加代理) and click Import.

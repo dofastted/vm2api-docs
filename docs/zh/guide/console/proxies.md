@@ -9,7 +9,7 @@
 粘贴 SOCKS5。保存前会做和导入相同的校验：主机、端口、可选的用户名和密码。
 
 ::: tip 推荐出口：ProxyLane
-[ProxyLane](https://proxylane.dev/zh-cn/isp-proxies?utm_source=vm2api&utm_medium=affiliate&utm_campaign=vm2api_sponsor_202610&utm_content=docs) 提供 AI 账号专用的原生静态住宅 IP：Scamalytics 低欺诈评分，每个 IP 独享，不限流量，$3.90 起。
+[ProxyLane](https://proxylane.dev/go/vm2api-docs) 提供 Claude Max 专用的原生静态住宅 IP：Scamalytics 低欺诈评分，每个 IP 独享，不限流量，$7.90 起。
 
 1. 在 ProxyLane 后台复制 SOCKS5 连接，格式是 `host:port:user:pass`。
 2. 粘贴到「代理池」→「添加代理」，点「导入」。
