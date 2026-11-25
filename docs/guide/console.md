@@ -23,6 +23,7 @@ The console is `http://<host>:8787/console/#/…`. The left nav matches the page
 | Settings | `#/settings/sticky` | Scheduling, protocol, setup, notify, backup, about |
 | Users | `#/users` | People who can sign in to the console |
 | Kernel | `#/wrap` | Install and sync the in-slot kernel |
+| Next-generation kernel | `#/wrap` | Install, switch, subscription, and update. See the [usage guide](./console/next-kernel) |
 
 The four monitor pages do not repeat the same numbers. Overview is health. Statistics is the trend. Logs is one request. Usage is the account window.
 

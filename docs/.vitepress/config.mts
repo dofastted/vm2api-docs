@@ -52,7 +52,8 @@ function sidebarEn(): DefaultTheme.Sidebar {
           { text: 'API endpoints', link: '/guide/console/endpoints' },
           { text: 'Database', link: '/guide/console/database' },
           { text: 'Users', link: '/guide/console/users' },
-          { text: 'Kernel', link: '/guide/console/kernel' }
+          { text: 'Kernel', link: '/guide/console/kernel' },
+          { text: 'Next-generation kernel', link: '/guide/console/next-kernel' }
         ]
       },
       {
@@ -121,7 +122,8 @@ function sidebarZh(): DefaultTheme.Sidebar {
           { text: 'API 地址', link: '/zh/guide/console/endpoints' },
           { text: '数据库', link: '/zh/guide/console/database' },
           { text: '用户', link: '/zh/guide/console/users' },
-          { text: '内核', link: '/zh/guide/console/kernel' }
+          { text: '内核', link: '/zh/guide/console/kernel' },
+          { text: '新一代防封内核', link: '/zh/guide/console/next-kernel' }
         ]
       },
       {

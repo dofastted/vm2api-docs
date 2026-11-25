@@ -4,7 +4,7 @@ vm2api turns an **Anthropic** subscription (Claude Pro, Team, Enterprise, or Max
 
 The caller speaks a standard protocol. The slot behind it runs the official client in an isolated container, or in KVM / QEMU when you choose a real virtual machine. Hardware identity (SMBIOS, MAC, machine-id), the network exit, and the credential all belong to that slot.
 
-This help site matches the product tree at **1.3.131**. Install scripts track the latest GitHub release, which may be newer.
+This help site matches the product tree at **1.4.135**. Install scripts track the latest GitHub release, which may be newer. How to use the next-generation kernel is a separate [usage guide](./console/next-kernel). A control-plane upgrade does not switch you over.
 
 ## What you get
 
@@ -56,3 +56,4 @@ Cleanliness checks for leaked CLI identity live in the product repository under 
 - [Quick Start](./quick-start) installs the control plane.
 - [Call the API](./api) is the client contract.
 - [Slots and accounts](./slots) is how an account becomes schedulable.
+- [Next-generation kernel](./console/next-kernel) is how to install, switch, and use it against the subscription quota.

@@ -11,3 +11,9 @@ Deleting an endpoint deletes every upstream key and every model under it. The co
 ## Difference from the model catalog
 
 [Models](./models) is what a client is allowed to see. This page is the upstream entry behind those catalog rows. Renaming a model in the catalog does not change a key stored here. Deleting an endpoint here removes the related models from the client catalog as well.
+
+## Channels and keys
+
+Models pulled from a channel are stored for that channel. After you refresh and save, they are still there when the control plane restarts.
+
+A direct API key can be pinned to one channel. Listing models and inference both stay on that channel. An older key with no pin still schedules across its original protocol scope.

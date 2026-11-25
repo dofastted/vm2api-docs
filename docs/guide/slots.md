@@ -49,6 +49,10 @@ Only the control plane's `RefreshIfNeeded` decides when to refresh. There is no 
 
 Send `x-session-id` (or `x-conversation-id`, or `x-claude-code-session-id`). While that slot remains schedulable, later turns of the same id stay on it. A dead credential clears the pin.
 
+A live session binding wins over another slot's tier or weight. Raising those on a different slot does not move this continuation. A new session, and reselection after the binding is gone, follow tier and pool policy.
+
+A Claude continuation that is already queued keeps waiting on the original slot. Budget drain, a slot marked unschedulable, and sticky-wait timeout still move it under the existing rules.
+
 ## Cluster
 
 Extra VPS nodes are added on the cluster page. They are other hosts, reached over SSH, not extra slots on this machine. Slot containers on a remote host still follow the same one-slot, one-egress rule.
