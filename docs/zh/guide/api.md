@@ -96,6 +96,12 @@ docker exec kin-<槽> curl -sS -o /dev/null -w '%{http_code}\n' --max-time 10 ht
 
 已知的 CLI 和内核故障会保留自己的错误码、HTTP 状态和 `retry-after`，不会被改写成 `incomplete_response`。业务 SSE 已经开始之后，网关只结束这条流，不重放。
 
+本地能指出字段的转换错误，会写明是哪个字段，并且不会把请求发出去，也不会因此换号。上游因为计费拒绝，不是转换失败，不要按转换错误去改正文。
+
+一次请求里连续出现没有配额证据的 429，会停止换号。裸 `429`、以及自动压缩时看到的 `429 rate_limit_error: Error`，都不会被当成额度耗尽，也不会冷却槽位。带有配额或限流证据的 429 仍按原来的额度规则处理。
+
+`/v1/responses` 可以打已经授权的 Claude 模型。无法转成结构化消息时在本机报错。工具历史按 `call_id` 配对。
+
 ## 用量数字
 
 非官方客户端看到的 `input_tokens` 和缓存字段，会藏起网关加上的人设 system 块和 server tools。你自己的 prompt 和 tools 仍然计入。官方 Claude Code 流量不遮罩。

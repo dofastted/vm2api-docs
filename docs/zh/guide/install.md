@@ -2,7 +2,7 @@
 
 先做完这一页，再打开管理台。更新不要走这条，去 [更新](./upgrade)。
 
-对照的产品树是 **1.3.131**。一键脚本拉的是 GitHub 上的最新 Release，版本号可以比本文新。机器要求不变：Ubuntu 24.04，Docker Engine，Compose V2。Debian 12 上槽内核经常起不来。不要在目标机上编译。
+对照的产品树是 **1.4.135**。一键脚本拉的是 GitHub 上的最新 Release，版本号可以比本文新。机器要求不变：Ubuntu 24.04，Docker Engine，Compose V2。Debian 12 上槽内核经常起不来。不要在目标机上编译。装完后的新一代防封内核见 [使用说明](./console/next-kernel)，安装这一步不会自动切过去。
 
 ## 做完之后你应该看到
 

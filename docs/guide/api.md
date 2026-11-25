@@ -96,6 +96,12 @@ docker exec kin-<slot> curl -sS -o /dev/null -w '%{http_code}\n' --max-time 10 h
 
 Known CLI and kernel failures keep their own code, HTTP status, and `retry-after`. They are not rewritten into `incomplete_response`. If business SSE has already started, the gateway ends that stream and does not replay it.
 
+A conversion error that can name a field names that field, does not send the request, and does not rotate the account. An upstream billing refusal is not a conversion failure. Do not rewrite the body to "fix" it.
+
+A run of 429 responses with no quota evidence stops account rotation for that request. A bare `429`, and `429 rate_limit_error: Error` seen during automatic compaction, are not treated as an exhausted budget and do not cool the slot down. A 429 that does carry quota or rate-limit evidence still follows the existing budget rules.
+
+`/v1/responses` can target an authorized Claude model. A body that cannot be turned into structured messages fails locally. Tool history is paired by `call_id`.
+
 ## Usage numbers
 
 For non-official clients, `input_tokens` and cache fields hide the persona system block and server tools the gateway added. Your own prompt and tools still count. Official Claude Code traffic is not masked.

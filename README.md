@@ -11,4 +11,4 @@ npm run build    # docs/.vitepress/dist
 npm run deploy   # build and upload to Cloudflare Pages
 ```
 
-English is the root locale. 简体中文 is under `docs/zh/`. Product behavior is documented against vm2api **1.3.131**. Field references that move with the code stay in the product repository (`docs/DEPLOY.md`, `docs/API.md`, `docs/PANEL_API.md`).
+English is the root locale. 简体中文 is under `docs/zh/`. Product behavior is documented against vm2api **1.4.135**. Field references that move with the code stay in the product repository (`docs/DEPLOY.md`, `docs/API.md`, `docs/PANEL_API.md`). Next-generation kernel usage is `docs/guide/console/next-kernel.md`.

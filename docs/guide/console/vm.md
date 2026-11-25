@@ -13,6 +13,12 @@ A slot is one isolated machine. The container name is `kin-<slot>`, or a KVM / Q
 
 A slot you have not started has no container. Missing `kin-<id>` in `docker ps` is expected until you start it.
 
+Rows are compact. Sort from the column header. Secondary fields show on hover, focus, or expand, and can be pinned visible. The top line summarizes how many are in the pool, the last 24 hours of success rate and request count, 7-day spend, seats, and the queue. Click a row to expand it. The button on the left opens the detail page.
+
+Schedule and priority share one column. The second line is why the slot is limited or not schedulable. The status bar is the last 24 hours of success rate plus an error-rate timeline. No requests in that window means no health figure, and the page does not probe to invent one. Host memory pressure is shown on Overview and the cluster machine table, not stamped onto every slot on that machine.
+
+A Claude slot has **Refresh usage**. It reuses that slot's credential and egress and does not send a model probe. Repeated clicks on the same slot collapse into one query. An official 429 backs off. Failure names the reason.
+
 ## On the detail
 
 - **Overview.** Identity, platform (Claude or GPT), current engine, cost split by model.

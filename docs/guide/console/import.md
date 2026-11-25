@@ -27,3 +27,13 @@ Production ignores `require_proxy: false`. No binding is `proxy_required`.
 A Claude slot queues official setup when `routing.official_cc` says so. The default is automatic. Setup writes the official login file, runs hello, and reads usage. That traffic still uses the slot's exit. The VPS does not dial Anthropic on its own for that slot.
 
 A dead credential leaves the pool and drops stickiness. An expired token with no refresh token is not scheduled. A successful import whose "available" switch is off is still not picked. Turn the switch on from the virtual-machine page.
+
+## Gemini
+
+**Import → Gemini** is a Gemini environment on the host. It does not create a slot and it does not enter virtual-machine scheduling. You can enter a Google OAuth code, a callback link, or a Gemini API key.
+
+After a refresh, the page shows only the account, project, subscription, models, quota, and credits the upstream actually returned. API-key mode reads models only. A field that was not returned is not shown as zero.
+
+A Gemini-only key is separate from Claude and Codex call scope. This release does not open Gemini inference to callers and does not bill it. The account holder still has to finish consent and token exchange.
+
+Linux amd64 hosts only. The panel separates "service not connected", "no install source", and "signature check failed". Do not treat those as one "not installed" state.

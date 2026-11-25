@@ -42,7 +42,7 @@ sudo bash /opt/vm2api/deploy/install.sh changelog
 指定 tag（必须是发布过的 tag）：
 
 ```bash
-sudo bash /opt/vm2api/deploy/install.sh upgrade --version v1.3.131
+sudo bash /opt/vm2api/deploy/install.sh upgrade --version v1.4.135
 ```
 
 ARM64 宿主机的 `--version` 要带和宿主一致的 `-arm64` 后缀，amd64 则是 `-amd64` 或不带后缀、由 `uname -m` 决定。不要在 amd64 机器上写 `-arm64`。
@@ -75,6 +75,8 @@ sudo bash /opt/vm2api/deploy/install.sh upgrade --no-sync-wrap
 5. 回到 [虚拟机](./console/vm)，确认槽仍可调度，官方初装状态没有掉成「未登录」。
 
 控制面重启本身不会替换正在运行的槽内进程。换了 `bin/kin-kernel` 却没同步，新请求仍走旧内核。
+
+新一代防封内核不在这次默认同步里自动更换。控制面到 1.4.135 之后，只有你准备换那一版时，才到 [新一代防封内核](./console/next-kernel) 按槽安装。Changelog 写了不需要重装时，不要为了追版本去重装。
 
 ## 更新之后的验收
 

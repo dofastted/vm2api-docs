@@ -4,6 +4,8 @@
 
 The nav label is **Kernel**. This page installs, uploads, and syncs the kernel inside slots. It does not create a slot and it does not import an account.
 
+Install, switch, subscription seats, and updates for the next-generation kernel are not on this page. See [Next-generation kernel](./next-kernel).
+
 ## Where the sample lives
 
 The default sample directory is `share/wrap-cli`. The control plane's main kernel is `KIN_KERNEL_BIN`, usually `bin/kin-kernel`. After a sync, the slot runs the copy that was synced. It does not run a newer file that is only on disk and has not been synced.

@@ -42,7 +42,7 @@ sudo bash /opt/vm2api/deploy/install.sh changelog
 Pin a published tag:
 
 ```bash
-sudo bash /opt/vm2api/deploy/install.sh upgrade --version v1.3.131
+sudo bash /opt/vm2api/deploy/install.sh upgrade --version v1.4.135
 ```
 
 On ARM64 the `--version` suffix must be `-arm64`. On amd64 use `-amd64` or omit the suffix and let `uname -m` choose. Do not pass `-arm64` on an amd64 host.
@@ -75,6 +75,8 @@ If About or the changelog says wrap-cli/sync:
 5. On [Virtual machines](./console/vm), confirm the slot is still schedulable and official setup did not fall back to "not logged in".
 
 A control-plane restart alone does not replace a running in-slot process. A new `bin/kin-kernel` that was never synced is unused.
+
+The next-generation kernel is not replaced by that default sync. After the control plane is on 1.4.135, install it per slot from [Next-generation kernel](./console/next-kernel) only when you mean to move. If the changelog says no reinstall, do not reinstall to chase the version.
 
 ## Acceptance
 

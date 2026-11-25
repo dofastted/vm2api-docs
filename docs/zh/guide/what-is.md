@@ -4,7 +4,7 @@ vm2api 把 **Anthropic** 订阅（Claude Pro、Team、Enterprise 或 Max）或 *
 
 调用方使用标准协议。后面的槽位在隔离容器里运行官方客户端；你选择真虚拟机时则是 KVM / QEMU。硬件身份（SMBIOS、MAC、machine-id）、网络出口和凭证都属于这个槽位。
 
-本帮助站对照的产品树是 **1.3.131**。安装脚本跟随 GitHub 上的最新 Release，可能比这个版本新。
+本帮助站对照的产品树是 **1.4.135**。安装脚本跟随 GitHub 上的最新 Release，可能比这个版本新。新一代防封内核的用法单独写在 [使用说明](./console/next-kernel)，不随控制面升级自动切换。
 
 ## 你拿到什么
 
@@ -56,3 +56,4 @@ flowchart LR
 - [快速开始](./quick-start) 安装控制面。
 - [调用 API](./api) 是客户端契约。
 - [槽位与账号](./slots) 说明一个账号怎样变成可调度。
+- [新一代防封内核](./console/next-kernel) 说明怎样安装、切换和按订阅额度使用。

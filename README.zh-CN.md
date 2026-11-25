@@ -11,4 +11,4 @@ npm run build    # docs/.vitepress/dist
 npm run deploy   # 构建并上传到 Cloudflare Pages
 ```
 
-英文是默认语言。简体中文在 `docs/zh/`。产品行为对照 vm2api **1.3.131**。会跟着代码变的字段说明留在产品仓库（`docs/DEPLOY.md`、`docs/API.md`、`docs/PANEL_API.md`）。
+英文是默认语言。简体中文在 `docs/zh/`。产品行为对照 vm2api **1.4.135**。会跟着代码变的字段说明留在产品仓库（`docs/DEPLOY.md`、`docs/API.md`、`docs/PANEL_API.md`）。新一代防封内核的用法在 `docs/zh/guide/console/next-kernel.md`。

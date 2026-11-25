@@ -2,7 +2,7 @@
 
 Finish this page before you open the console. An existing machine uses [Update](./upgrade), not this page.
 
-These steps match product tree **1.3.131**. The one-click script pulls the latest GitHub release, which may be newer. The machine does not change: Ubuntu 24.04, Docker Engine, Compose V2. Debian 12 often fails to start the slot kernel. Do not compile on the target host.
+These steps match product tree **1.4.135**. The one-click script pulls the latest GitHub release, which may be newer. The machine does not change: Ubuntu 24.04, Docker Engine, Compose V2. Debian 12 often fails to start the slot kernel. Do not compile on the target host. The next-generation kernel is a later choice, documented in the [usage guide](./console/next-kernel). This install does not switch you over.
 
 ## What done looks like
 

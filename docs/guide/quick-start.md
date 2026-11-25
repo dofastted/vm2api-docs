@@ -8,4 +8,6 @@ On a new machine, do these in order. Do not start from the console.
 
 A machine that is already running, and you only want a newer release: do not reinstall. Use [Update](./upgrade). An update keeps `.env`, `vms/`, and `data/`, and it does not `docker rm` slots.
 
+To move onto the next-generation kernel, do not reinstall the machine from this page. After the control plane is up, install or switch selected slots from [Next-generation kernel](./console/next-kernel).
+
 Every console screen is listed in the [page map](./console). Every settings tab is in [Settings](./settings).
